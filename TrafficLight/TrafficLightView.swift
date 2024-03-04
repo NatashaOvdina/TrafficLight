@@ -17,36 +17,31 @@ struct TrafficLightView: View {
     
     @State private var buttonText = "START"
     
-    private let lightIsOn = 1.0
-    private let lightIsOff = 0.3
-    
     var body: some View {
         
         VStack(alignment: .center, spacing: 40) {
-            RedCircleView().opacity(redCircleOpacity)
-            YellowCircleView().opacity(yellowCircleOpacity)
-            GreenCircleView().opacity(greenCircleOpacity)
+            CircleView(color: .red, opacity: redCircleOpacity)
+            CircleView(color: .yellow, opacity: yellowCircleOpacity)
+            CircleView(color: .green, opacity: greenCircleOpacity)
         }
         .padding(.top, 80)
         
         Spacer()
         
-        Button(action: startButtonPressed) {
-            Text(buttonText)
-                .font(.system(size: 25)).bold()
-                .foregroundStyle(.white)
-                .padding().frame(minWidth: 120, minHeight: 60)
-                .background(.tint, in: Capsule())
-                .overlay(Capsule().stroke(Color.white, lineWidth: 4))
-                .shadow(radius: 10)
+        ButtonView(title: buttonText) {
+            if buttonText == "START" {
+                buttonText = "NEXT"
+            }
+            startButtonPressed()
         }
     }
     
     private func startButtonPressed() {
+        let lightIsOn = 1.0
+        let lightIsOff = 0.3
         
         switch currentLight {
         case .red:
-            changeButtonTitle()
             greenCircleOpacity = lightIsOff
             redCircleOpacity = lightIsOn
             currentLight = .yellow
@@ -59,10 +54,6 @@ struct TrafficLightView: View {
             yellowCircleOpacity = lightIsOff
             currentLight = .red
         }
-    }
-    
-    private func changeButtonTitle() {
-        buttonText = "NEXT"
     }
 }
 
